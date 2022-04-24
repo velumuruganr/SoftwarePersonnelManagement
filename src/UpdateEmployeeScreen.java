@@ -256,10 +256,8 @@ public class UpdateEmployeeScreen extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new NewEmployeeScreen().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new NewEmployeeScreen().setVisible(true);
         });
     }
 
