@@ -1,4 +1,6 @@
-
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /*
@@ -12,11 +14,12 @@ import javax.swing.JOptionPane;
  */
 public class EmployeeDetail extends javax.swing.JFrame {
 
-    /**
-     * Creates new form EmployeeDetail
-     */
     public EmployeeDetail() {
+    }
+
+    EmployeeDetail(String empId) {
         initComponents();
+        set_values(empId);
     }
 
     /**
@@ -57,7 +60,7 @@ public class EmployeeDetail extends javax.swing.JFrame {
         assigntaskbtn = new javax.swing.JButton();
         editEmployeedetailsbtn = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -67,29 +70,61 @@ public class EmployeeDetail extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 51, 51));
         jLabel2.setText("Employee ID ");
 
+        empId_fld.setEditable(false);
+        empId_fld.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        empId_fld.setForeground(new java.awt.Color(255, 51, 51));
+
+        dob_fld.setEditable(false);
+        dob_fld.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        dob_fld.setForeground(new java.awt.Color(255, 51, 51));
+
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 51, 51));
         jLabel3.setText("Date Of Birth");
+
+        email_fld.setEditable(false);
+        email_fld.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        email_fld.setForeground(new java.awt.Color(255, 51, 51));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 51, 51));
         jLabel4.setText("Email Address");
 
+        salary_fld.setEditable(false);
+        salary_fld.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        salary_fld.setForeground(new java.awt.Color(255, 51, 51));
+
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 51, 51));
         jLabel5.setText("Salary");
+
+        name_fld.setEditable(false);
+        name_fld.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        name_fld.setForeground(new java.awt.Color(255, 51, 51));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 51, 51));
         jLabel6.setText("Name");
 
+        designation_fld.setEditable(false);
+        designation_fld.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        designation_fld.setForeground(new java.awt.Color(255, 51, 51));
+
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 51, 51));
         jLabel7.setText("Designation");
 
+        mobile_fld.setEditable(false);
+        mobile_fld.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        mobile_fld.setForeground(new java.awt.Color(255, 51, 51));
+
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 51, 51));
         jLabel8.setText("Mobile Number");
+
+        status_fld.setEditable(false);
+        status_fld.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        status_fld.setForeground(new java.awt.Color(255, 51, 51));
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 51, 51));
@@ -99,9 +134,17 @@ public class EmployeeDetail extends javax.swing.JFrame {
         jLabel10.setForeground(new java.awt.Color(255, 51, 51));
         jLabel10.setText("Tasks Assigned");
 
+        nooftasks_fld.setEditable(false);
+        nooftasks_fld.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        nooftasks_fld.setForeground(new java.awt.Color(255, 51, 51));
+
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 51, 51));
         jLabel11.setText("Completed On time");
+
+        completed_fld.setEditable(false);
+        completed_fld.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        completed_fld.setForeground(new java.awt.Color(255, 51, 51));
 
         javax.swing.GroupLayout panel2Layout = new javax.swing.GroupLayout(panel2);
         panel2.setLayout(panel2Layout);
@@ -293,10 +336,11 @@ public class EmployeeDetail extends javax.swing.JFrame {
                 .addGap(23, 23, 23)
                 .addComponent(panel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(assigntaskbtn)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(editEmployeedetailsbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(deleteemployeebtn))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(assigntaskbtn)
+                        .addComponent(deleteemployeebtn)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(22, Short.MAX_VALUE))
@@ -322,6 +366,7 @@ public class EmployeeDetail extends javax.swing.JFrame {
         int status = db.delete_employee(Integer.valueOf(empId_fld.getText()));
         if(status==1){
             JOptionPane.showMessageDialog(this, "Success");
+            this.dispose();
         }else{
             JOptionPane.showMessageDialog(this, "Failure");
         }
@@ -398,4 +443,26 @@ public class EmployeeDetail extends javax.swing.JFrame {
     private javax.swing.JTextField salary_fld;
     private javax.swing.JTextField status_fld;
     // End of variables declaration//GEN-END:variables
+
+    private void set_values(String empId) {
+       DataBase db = new DataBase();
+       ResultSet rs = db.get_employee(empId);
+        try {
+            while(rs.next()){
+                empId_fld.setText(empId);
+                name_fld.setText(rs.getString("Name"));
+                dob_fld.setText(rs.getString("DOB"));
+                mobile_fld.setText(rs.getString("MOBILE"));
+                designation_fld.setText(rs.getString("DESIGNATION"));
+                salary_fld.setText(rs.getString("SALARY"));
+                email_fld.setText(rs.getString("EMAIL"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeDetail.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }
+
+
 }

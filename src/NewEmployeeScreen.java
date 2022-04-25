@@ -1,9 +1,14 @@
 import javax.swing.JOptionPane;
 
 
-public class NewEmployeeScreen extends javax.swing.JFrame {
+public class NewEmployeeScreen extends javax.swing.JFrame {   
 
+    private MainScreen aThis;
     public NewEmployeeScreen() {
+    }
+
+    NewEmployeeScreen(MainScreen aThis) {
+        this.aThis = aThis;
         initComponents();
     }
 
@@ -199,7 +204,11 @@ public class NewEmployeeScreen extends javax.swing.JFrame {
                 mobile_fld.getText(), designation_fld.getText(), salary_fld.getText());
         if(status==1){
             JOptionPane.showMessageDialog(this, "Success");
-            clear_all();
+            aThis.model.addRow(new Object[]{Integer.valueOf(empId_fld.getText()), 
+                name_fld.getText(), designation_fld.getText(), "free"});
+            
+            this.dispose();
+            
         }else{
             JOptionPane.showMessageDialog(this, "Failure");
         }

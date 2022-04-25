@@ -1,10 +1,13 @@
-
-import javax.swing.JOptionPane;
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 public class MainScreen extends javax.swing.JFrame {
 
     public MainScreen() {
         initComponents();
+        get_employees();
     }
 
     @SuppressWarnings("unchecked")
@@ -38,8 +41,8 @@ public class MainScreen extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        employee_tbl = new javax.swing.JTable();
+        filterbtn = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         addemployeebtn = new javax.swing.JButton();
@@ -385,34 +388,53 @@ public class MainScreen extends javax.swing.JFrame {
                 .addGap(16, 16, 16))
         );
 
-        jTable2.setAutoCreateRowSorter(true);
-        jTable2.setBackground(new java.awt.Color(102, 102, 102));
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        employee_tbl.setAutoCreateRowSorter(true);
+        employee_tbl.setBackground(new java.awt.Color(102, 102, 102));
+        employee_tbl.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        employee_tbl.setForeground(new java.awt.Color(255, 51, 51));
+        employee_tbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
-                "S No", "Name", "EmployeeId", "Designation", "Active"
+                "EmpId", "Name", "Designation", "Active"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
-        });
-        jTable2.setSelectionBackground(new java.awt.Color(255, 0, 51));
-        jScrollPane2.setViewportView(jTable2);
 
-        jButton1.setBackground(new java.awt.Color(255, 51, 51));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Filter");
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        employee_tbl.setSelectionBackground(new java.awt.Color(204, 204, 204));
+        employee_tbl.setSelectionForeground(new java.awt.Color(255, 51, 51));
+        employee_tbl.getTableHeader().setReorderingAllowed(false);
+        employee_tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                employee_tblMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(employee_tbl);
+        employee_tbl.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+
+        filterbtn.setBackground(new java.awt.Color(255, 51, 51));
+        filterbtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        filterbtn.setForeground(new java.awt.Color(255, 255, 255));
+        filterbtn.setText("Filter");
+        filterbtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                filterbtnMouseClicked(evt);
+            }
+        });
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 51, 51));
@@ -451,7 +473,7 @@ public class MainScreen extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(addemployeebtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(filterbtn)
                 .addGap(38, 38, 38))
         );
         jPanel3Layout.setVerticalGroup(
@@ -460,7 +482,7 @@ public class MainScreen extends javax.swing.JFrame {
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(filterbtn)
                     .addComponent(jLabel7)
                     .addComponent(jLabel8)
                     .addComponent(addemployeebtn))
@@ -508,8 +530,33 @@ public class MainScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_trainingbtnMouseClicked
 
     private void addemployeebtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addemployeebtnMouseClicked
-        new NewEmployeeScreen().setVisible(true);
+        new NewEmployeeScreen(this).setVisible(true);
     }//GEN-LAST:event_addemployeebtnMouseClicked
+
+    private void filterbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_filterbtnMouseClicked
+
+    }//GEN-LAST:event_filterbtnMouseClicked
+
+    private void employee_tblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employee_tblMouseClicked
+        int selectedRow = employee_tbl.getSelectedRow();
+        new EmployeeDetail(model.getValueAt(selectedRow, 0).toString()).setVisible(true);
+    }//GEN-LAST:event_employee_tblMouseClicked
+    
+    public DefaultTableModel model;
+    
+    public void get_employees(){
+        DataBase db = new DataBase();
+        ResultSet rs = db.select_employee();
+        model = (DefaultTableModel) employee_tbl.getModel();
+        try {
+            while(rs.next()){
+                model.addRow(new Object[]{rs.getInt("EmpId"), rs.getString("name"),
+                    rs.getString("designation"), "working"});
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MainScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public static void main(String args[]) {
                 /* Set the Nimbus look and feel */
@@ -541,11 +588,12 @@ public class MainScreen extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addemployeebtn;
+    private javax.swing.JTable employee_tbl;
     private javax.swing.JPanel employeebtn;
     private javax.swing.JPanel employeetab;
+    private javax.swing.JButton filterbtn;
     private javax.swing.JPanel homebtn;
     private javax.swing.JPanel hometab;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -568,7 +616,6 @@ public class MainScreen extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JPanel trainingbtn;
     private javax.swing.JPanel trainingtab;

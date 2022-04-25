@@ -6,8 +6,8 @@ import java.util.logging.Logger;
 public class DataBase {
     Connection connection;
     Statement statement;
-    ResultSet resultSet;
-    int status;
+    ResultSet resultSet = null;
+    int status = 0;
     
     public void get_connection(){
         try {
@@ -70,6 +70,34 @@ public class DataBase {
         }
         return status;
     }
+    
+    public ResultSet select_employee(){
+        get_connection();
+        try{
+            Statement statement = connection.createStatement();
+            String query = "SELECT * FROM EMPLOYEE_TABLE";
+            resultSet = statement.executeQuery(query);
+            
+        }catch (SQLException sQLException) {
+            Logger.getLogger(DataBase.class.getName()).log(Level.SEVERE, null, sQLException);
+        }
+        return resultSet;
+    }
+    
+    public ResultSet get_employee(String empId){
+        get_connection();
+        try{
+            Statement statement = connection.createStatement();
+            String query = "SELECT * FROM EMPLOYEE_TABLE WHERE EMPID="+empId;
+            resultSet = statement.executeQuery(query);
+            
+        }catch (SQLException sQLException) {
+            Logger.getLogger(DataBase.class.getName()).log(Level.SEVERE, null, sQLException);
+        }
+        return resultSet;
+    }
+    
+    
     
     public int add_task(int taskId){
         get_connection();
