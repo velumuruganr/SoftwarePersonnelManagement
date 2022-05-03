@@ -1,4 +1,8 @@
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /*
@@ -11,13 +15,19 @@ import javax.swing.JOptionPane;
  * @author velmu
  */
 public class UpdateEmployeeScreen extends javax.swing.JFrame {
-
-    /**
-     * Creates new form NewEmployeeScreen
-     */
+    private EmployeeDetail athis;
+    
     public UpdateEmployeeScreen() {
-        initComponents();
+        
     }
+
+    UpdateEmployeeScreen(String empId, EmployeeDetail aThis) {
+        initComponents();
+        set_values(empId);
+        athis = aThis;
+    }
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -47,7 +57,7 @@ public class UpdateEmployeeScreen extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         salary_fld = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -59,6 +69,8 @@ public class UpdateEmployeeScreen extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 51, 51));
         jLabel2.setText("Employee ID");
+
+        empId_fld.setEditable(false);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 51, 51));
@@ -215,7 +227,9 @@ public class UpdateEmployeeScreen extends javax.swing.JFrame {
                 mobile_fld.getText(), designation_fld.getText(), salary_fld.getText());
         if(status==1){
             JOptionPane.showMessageDialog(this, "Success");
-            clear_all();
+            this.dispose();
+            athis.set_values(empId_fld.getText());
+            athis.athis.get_employees();
         }else{
             JOptionPane.showMessageDialog(this, "Failure");
         }
@@ -281,4 +295,23 @@ public class UpdateEmployeeScreen extends javax.swing.JFrame {
     private javax.swing.JTextField salary_fld;
     private javax.swing.JButton updt_btn;
     // End of variables declaration//GEN-END:variables
+
+    private void set_values(String empId) {
+        DataBase db = new DataBase();
+        ResultSet rs = db.get_employee(empId);
+        try {
+            while(rs.next()){
+                name_fld.setText(rs.getString("Name"));
+                dob_fld.setText(rs.getString("DOB"));
+                mobile_fld.setText(rs.getString("MOBILE"));
+                designation_fld.setText(rs.getString("DESIGNATION"));
+                salary_fld.setText(rs.getString("SALARY"));
+                email_fld.setText(rs.getString("EMAIL"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeDetail.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }
 }

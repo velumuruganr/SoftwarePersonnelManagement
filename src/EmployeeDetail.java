@@ -2,6 +2,7 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -13,13 +14,17 @@ import javax.swing.JOptionPane;
  * @author velmu
  */
 public class EmployeeDetail extends javax.swing.JFrame {
-
+    
+    public MainScreen athis;
+    
     public EmployeeDetail() {
     }
 
-    EmployeeDetail(String empId) {
+    EmployeeDetail(String empId, MainScreen aThis) {
         initComponents();
         set_values(empId);
+        set_task_details(empId);
+        athis = aThis;
     }
 
     /**
@@ -245,13 +250,10 @@ public class EmployeeDetail extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "SNo", "TaskID", "DeadLine", "Status"
+                "TaskId", "Task", "DeadLine", "Status"
             }
         ) {
             Class[] types = new Class [] {
@@ -273,6 +275,7 @@ public class EmployeeDetail extends javax.swing.JFrame {
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(0).setResizable(false);
             jTable1.getColumnModel().getColumn(0).setPreferredWidth(10);
+            jTable1.getColumnModel().getColumn(1).setResizable(false);
             jTable1.getColumnModel().getColumn(1).setPreferredWidth(30);
             jTable1.getColumnModel().getColumn(2).setResizable(false);
             jTable1.getColumnModel().getColumn(2).setPreferredWidth(20);
@@ -366,6 +369,7 @@ public class EmployeeDetail extends javax.swing.JFrame {
         int status = db.delete_employee(Integer.valueOf(empId_fld.getText()));
         if(status==1){
             JOptionPane.showMessageDialog(this, "Success");
+            athis.get_employees();
             this.dispose();
         }else{
             JOptionPane.showMessageDialog(this, "Failure");
@@ -373,11 +377,11 @@ public class EmployeeDetail extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteemployeebtnMouseClicked
 
     private void assigntaskbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_assigntaskbtnMouseClicked
-        new AssignWork().setVisible(true);
+        new AssignWork(this).setVisible(true);
     }//GEN-LAST:event_assigntaskbtnMouseClicked
 
     private void editEmployeedetailsbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editEmployeedetailsbtnMouseClicked
-        new UpdateEmployeeScreen().setVisible(true);
+        new UpdateEmployeeScreen(empId_fld.getText(), this).setVisible(true);
     }//GEN-LAST:event_editEmployeedetailsbtnMouseClicked
 
     /**
@@ -444,7 +448,7 @@ public class EmployeeDetail extends javax.swing.JFrame {
     private javax.swing.JTextField status_fld;
     // End of variables declaration//GEN-END:variables
 
-    private void set_values(String empId) {
+    public void set_values(String empId) {
        DataBase db = new DataBase();
        ResultSet rs = db.get_employee(empId);
         try {
@@ -462,6 +466,28 @@ public class EmployeeDetail extends javax.swing.JFrame {
         }
         
         
+    }
+    
+    public DefaultTableModel model; 
+    
+    public void set_task_details(String empId) {
+        DataBase db = new DataBase();
+        ResultSet rs = db.select_task(empId);
+        model = (DefaultTableModel) jTable1.getModel();
+        int rowCount = model.getRowCount();
+        for (int i = rowCount - 1; i >= 0; i--) {
+            model.removeRow(i);
+        }
+        try {
+            while(rs.next()){
+                model.addRow(new Object[]{rs.getInt("taskId"), rs.getString("task"),
+                    rs.getString("deadline"),"pending"});
+            }
+            int no_of_rows = model.getRowCount();
+            nooftasks_fld.setText(String.valueOf(no_of_rows));
+        } catch (SQLException ex) {
+            Logger.getLogger(MainScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 

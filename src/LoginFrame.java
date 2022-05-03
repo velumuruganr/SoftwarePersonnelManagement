@@ -1,3 +1,6 @@
+
+import javax.swing.JOptionPane;
+
 public class LoginFrame extends javax.swing.JFrame {
     public LoginFrame() {
         initComponents();
@@ -117,14 +120,21 @@ public class LoginFrame extends javax.swing.JFrame {
         String username = jTextField1.getText();
         String password = String.valueOf(jPasswordField1.getPassword());
         
-        if(username.equals("admin") && password.equals("1234")){
-            
+        DataBase dataBase = new DataBase();
+        int code = dataBase.login(username, password);
+        if(code == 1){          
             new MainScreen().setVisible(true);
+            this.dispose();  
+        }
+        else if(code == 2){
+            new Employee().setVisible(true);
             this.dispose();
-           
-            System.out.print("Login Success");
-        }else{
-            System.out.print("Invalid User");
+        }
+        else if(code == 401){
+            JOptionPane.showMessageDialog(this, "Invalid Password");
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Invalid Credentials");
         }
         
     }//GEN-LAST:event_jButton1ActionPerformed

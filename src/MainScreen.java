@@ -8,6 +8,7 @@ public class MainScreen extends javax.swing.JFrame {
     public MainScreen() {
         initComponents();
         get_employees();
+        get_trainings();
     }
 
     @SuppressWarnings("unchecked")
@@ -37,14 +38,11 @@ public class MainScreen extends javax.swing.JFrame {
         employeetab = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         employee_tbl = new javax.swing.JTable();
-        filterbtn = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        no_of_employees_lbl = new javax.swing.JLabel();
         addemployeebtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -214,7 +212,10 @@ public class MainScreen extends javax.swing.JFrame {
 
         jPanel8.setBackground(new java.awt.Color(51, 51, 51));
 
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jPanel9.setBackground(new java.awt.Color(51, 51, 51));
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 51, 51));
         jLabel9.setText("SPM System");
 
         jPanel10.setBackground(new java.awt.Color(255, 0, 0));
@@ -247,7 +248,7 @@ public class MainScreen extends javax.swing.JFrame {
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 531, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 524, Short.MAX_VALUE)
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
         );
@@ -289,7 +290,7 @@ public class MainScreen extends javax.swing.JFrame {
 
         trainingtab.setBackground(new java.awt.Color(51, 51, 51));
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 51, 51));
         jLabel4.setText("Trainings");
 
@@ -302,11 +303,11 @@ public class MainScreen extends javax.swing.JFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "SNo", "TaskID", "Task ", "EmployeeID", "DeadLine", "Status"
+                "TaskID", "EmployeeID", "Task ", "Description", "DeadLine", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false
@@ -318,6 +319,12 @@ public class MainScreen extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        jTable1.getTableHeader().setReorderingAllowed(false);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(jTable1);
@@ -342,7 +349,7 @@ public class MainScreen extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addGap(52, 52, 52)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 476, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         getContentPane().add(trainingtab, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 0, 840, 640));
@@ -353,11 +360,7 @@ public class MainScreen extends javax.swing.JFrame {
 
         jPanel7.setBackground(new java.awt.Color(51, 51, 51));
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 51, 51));
-        jLabel5.setText("Search : ");
-
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 51, 51));
         jLabel6.setText("SPM System");
 
@@ -368,20 +371,10 @@ public class MainScreen extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addContainerGap(18, Short.MAX_VALUE)
                 .addComponent(jLabel6)
@@ -391,7 +384,7 @@ public class MainScreen extends javax.swing.JFrame {
         employee_tbl.setAutoCreateRowSorter(true);
         employee_tbl.setBackground(new java.awt.Color(102, 102, 102));
         employee_tbl.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        employee_tbl.setForeground(new java.awt.Color(255, 51, 51));
+        employee_tbl.setForeground(new java.awt.Color(255, 255, 255));
         employee_tbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -415,6 +408,7 @@ public class MainScreen extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        employee_tbl.setRowHeight(40);
         employee_tbl.setSelectionBackground(new java.awt.Color(204, 204, 204));
         employee_tbl.setSelectionForeground(new java.awt.Color(255, 51, 51));
         employee_tbl.getTableHeader().setReorderingAllowed(false);
@@ -426,23 +420,13 @@ public class MainScreen extends javax.swing.JFrame {
         jScrollPane2.setViewportView(employee_tbl);
         employee_tbl.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
-        filterbtn.setBackground(new java.awt.Color(255, 51, 51));
-        filterbtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        filterbtn.setForeground(new java.awt.Color(255, 255, 255));
-        filterbtn.setText("Filter");
-        filterbtn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                filterbtnMouseClicked(evt);
-            }
-        });
-
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 51, 51));
         jLabel7.setText("Total number of Employees:");
 
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 51, 51));
-        jLabel8.setText("0");
+        no_of_employees_lbl.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        no_of_employees_lbl.setForeground(new java.awt.Color(255, 51, 51));
+        no_of_employees_lbl.setText("0");
 
         addemployeebtn.setBackground(new java.awt.Color(255, 51, 51));
         addemployeebtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -469,12 +453,10 @@ public class MainScreen extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(no_of_employees_lbl, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(addemployeebtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(filterbtn)
-                .addGap(38, 38, 38))
+                .addGap(38, 406, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -482,9 +464,8 @@ public class MainScreen extends javax.swing.JFrame {
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(filterbtn)
                     .addComponent(jLabel7)
-                    .addComponent(jLabel8)
+                    .addComponent(no_of_employees_lbl)
                     .addComponent(addemployeebtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -533,30 +514,51 @@ public class MainScreen extends javax.swing.JFrame {
         new NewEmployeeScreen(this).setVisible(true);
     }//GEN-LAST:event_addemployeebtnMouseClicked
 
-    private void filterbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_filterbtnMouseClicked
-
-    }//GEN-LAST:event_filterbtnMouseClicked
-
     private void employee_tblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employee_tblMouseClicked
         int selectedRow = employee_tbl.getSelectedRow();
-        new EmployeeDetail(model.getValueAt(selectedRow, 0).toString()).setVisible(true);
+        new EmployeeDetail(model.getValueAt(selectedRow, 0).toString(), this).setVisible(true);
     }//GEN-LAST:event_employee_tblMouseClicked
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        int selectedRow = jTable1.getSelectedRow();
+        new EmployeeDetail(model2.getValueAt(selectedRow, 1).toString(), this).setVisible(true);
+    }//GEN-LAST:event_jTable1MouseClicked
     
-    public DefaultTableModel model;
+    public DefaultTableModel model, model2;
     
     public void get_employees(){
         DataBase db = new DataBase();
         ResultSet rs = db.select_employee();
         model = (DefaultTableModel) employee_tbl.getModel();
+        int rowCount = model.getRowCount();
+        for (int i = rowCount - 1; i >= 0; i--) {
+            model.removeRow(i);
+        }
         try {
             while(rs.next()){
-                model.addRow(new Object[]{rs.getInt("EmpId"), rs.getString("name"),
+                model.addRow(new Object[]{rs.getInt("empId"), rs.getString("name"),
                     rs.getString("designation"), "working"});
+            }
+            int no_of_rows = model.getRowCount();
+            no_of_employees_lbl.setText(String.valueOf(no_of_rows));
+        } catch (SQLException ex) {
+            Logger.getLogger(MainScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void get_trainings(){
+        DataBase db = new DataBase();
+        ResultSet rs = db.select_tasks();
+        model2 = (DefaultTableModel) jTable1.getModel();
+        try {
+            while(rs.next()){
+                model2.addRow(new Object[]{rs.getInt("taskId"), rs.getInt("empId"),
+                    rs.getString("task"),rs.getString("description"),  rs.getString("deadline"), "working"});
             }
         } catch (SQLException ex) {
             Logger.getLogger(MainScreen.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
 
     public static void main(String args[]) {
                 /* Set the Nimbus look and feel */
@@ -591,7 +593,6 @@ public class MainScreen extends javax.swing.JFrame {
     private javax.swing.JTable employee_tbl;
     private javax.swing.JPanel employeebtn;
     private javax.swing.JPanel employeetab;
-    private javax.swing.JButton filterbtn;
     private javax.swing.JPanel homebtn;
     private javax.swing.JPanel hometab;
     private javax.swing.JLabel jLabel1;
@@ -599,10 +600,8 @@ public class MainScreen extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
@@ -616,7 +615,7 @@ public class MainScreen extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel no_of_employees_lbl;
     private javax.swing.JPanel trainingbtn;
     private javax.swing.JPanel trainingtab;
     // End of variables declaration//GEN-END:variables

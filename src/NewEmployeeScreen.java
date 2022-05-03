@@ -3,12 +3,12 @@ import javax.swing.JOptionPane;
 
 public class NewEmployeeScreen extends javax.swing.JFrame {   
 
-    private MainScreen aThis;
+    private MainScreen athis;
     public NewEmployeeScreen() {
     }
 
     NewEmployeeScreen(MainScreen aThis) {
-        this.aThis = aThis;
+        athis = aThis;
         initComponents();
     }
 
@@ -18,8 +18,6 @@ public class NewEmployeeScreen extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        empId_fld = new javax.swing.JTextField();
         email_fld = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         name_fld = new javax.swing.JTextField();
@@ -35,7 +33,7 @@ public class NewEmployeeScreen extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         salary_fld = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -43,10 +41,6 @@ public class NewEmployeeScreen extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 51, 51));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("New Employee");
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 51, 51));
-        jLabel2.setText("Employee ID");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 51, 51));
@@ -123,10 +117,6 @@ public class NewEmployeeScreen extends javax.swing.JFrame {
                             .addGap(31, 31, 31)
                             .addComponent(email_fld, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel2)
-                            .addGap(31, 31, 31)
-                            .addComponent(empId_fld, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jLabel4)
                             .addGap(31, 31, 31)
                             .addComponent(name_fld, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -142,11 +132,7 @@ public class NewEmployeeScreen extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addComponent(jLabel1)
-                .addGap(37, 37, 37)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(empId_fld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(30, 30, 30)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(name_fld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -170,7 +156,7 @@ public class NewEmployeeScreen extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(salary_fld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(clearbtn)
                     .addComponent(addbtn))
@@ -185,7 +171,7 @@ public class NewEmployeeScreen extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -199,14 +185,12 @@ public class NewEmployeeScreen extends javax.swing.JFrame {
     private void addbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbtnMouseClicked
         
         DataBase db = new DataBase();
-        int status = db.add_employee(Integer.valueOf(empId_fld.getText()), 
+        int status = db.add_employee( 
                 name_fld.getText(), dob_fld.getText(), email_fld.getText(),
                 mobile_fld.getText(), designation_fld.getText(), salary_fld.getText());
         if(status==1){
             JOptionPane.showMessageDialog(this, "Success");
-            aThis.model.addRow(new Object[]{Integer.valueOf(empId_fld.getText()), 
-                name_fld.getText(), designation_fld.getText(), "free"});
-            
+            athis.get_employees();
             this.dispose();
             
         }else{
@@ -216,7 +200,6 @@ public class NewEmployeeScreen extends javax.swing.JFrame {
 
     public void clear_all(){
         String t = "";
-        empId_fld.setText(t);
         name_fld.setText(t);
         dob_fld.setText(t);
         email_fld.setText(t);
@@ -261,9 +244,7 @@ public class NewEmployeeScreen extends javax.swing.JFrame {
     private javax.swing.JTextField designation_fld;
     private javax.swing.JTextField dob_fld;
     private javax.swing.JTextField email_fld;
-    private javax.swing.JTextField empId_fld;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
